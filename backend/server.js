@@ -12,6 +12,14 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
+
+console.log("SMTP config:", {
+  host: process.env.SMTP_HOST,
+  port: process.env.SMTP_PORT,
+  user: process.env.SMTP_USER,
+  passLength: process.env.SMTP_PASS?.length,
+});
+
 // Config nodemailer avec Brevo
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
