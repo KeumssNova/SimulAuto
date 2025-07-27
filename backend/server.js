@@ -2,6 +2,12 @@ import express from "express";
 import cors from "cors";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
+import Stripe from "stripe";
+import pricingRoutes from './routes/pricing.js';
+import webhookRoutes from './routes/webhook.js';
+import { createClient } from '@supabase/supabase-js';
+import bodyParser from "body-parser";
+
 
 dotenv.config({path: "/etc/secrets/.env"});
 
@@ -67,3 +73,28 @@ app.post("/api/contact", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Serveur en écoute sur le port ${PORT}`);
 });
+
+// STRIPE
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+app.use(
+  '/api/webhook',
+  bodyParser.raw({ type: 'application/json' })
+);
+
+// Routes à ajouter plus bas
+app.use("/api/checkout", checkoutRoutes);
+app.use('/api/pricing', pricingRoutes);
+app.use('/api/webhook', webhookRoutes);
+
+app.listen(process.env.PORT || 3001, () => {
+  console.log('Serveur démarré');
+});
+
+// BDD 
+
+
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_KEY
+);
