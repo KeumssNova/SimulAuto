@@ -3,7 +3,7 @@ import cors from "cors";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 
-dotenv.config();
+dotenv.config({path: "/etc/secrets/.env"});
 
 const app = express();
 const PORT = process.env.PORT || 3001;
