@@ -31,11 +31,12 @@ app.post("/api/contact", async (req, res) => {
   }
 
   const mailOptions = {
-    from: `"${nom}" <${email}>`,
+    from: `"SimulAuto Contact" <contact@simulauto.fr>`,
     to: process.env.CONTACT_EMAIL,
     subject: `Message via SimulAuto - ${nom}`,
     text: message,
     html: `<h3>Nouveau message :</h3><p>${message}</p><p><strong>De :</strong> ${nom} - ${email}</p>`,
+    replyTo: email 
   };
 
   try {
