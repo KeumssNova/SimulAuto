@@ -22,9 +22,9 @@ console.log("SMTP config:", {
 
 // Config nodemailer avec Brevo
 const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: process.env.SMTP_PORT,
-  secure: false, // Brevo utilise TLS (false pour 587) jsp pk 
+  host: process.env.SMTP_HOST,  // smtp.gmail.com
+  port: Number(process.env.SMTP_PORT) || 587,
+  secure: false, // false car port 587 utilise STARTTLS
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
