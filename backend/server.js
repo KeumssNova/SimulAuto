@@ -47,6 +47,14 @@ app.post("/api/contact", async (req, res) => {
     replyTo: email 
   };
 
+  transporter.verify((error, success) => {
+    if (error) {
+      console.error('Erreur de connexion SMTP :', error);
+    } else {
+      console.log('Connexion SMTP réussie, prêt à envoyer des emails.');
+    }
+  });
+
   try {
     await transporter.sendMail(mailOptions);
     res.json({ success: true, message: "Message envoyé avec succès !" });
