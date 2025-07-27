@@ -39,7 +39,7 @@ app.post("/api/contact", async (req, res) => {
   }
 
   const mailOptions = {
-    from: `"SimulAuto Contact" <contact@simulauto.fr>`,
+    from: `"SimulAuto" <contact@simulauto.fr>`,
     to: process.env.CONTACT_EMAIL,
     subject: `Message via SimulAuto - ${nom}`,
     text: message,
