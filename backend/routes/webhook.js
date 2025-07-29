@@ -23,7 +23,7 @@ router.post('/',async (req, res) => {
     const { data: sub } = await supabase
       .from("subscriptions")
       .update({ status: "active" })
-      .eq("stripe_id", session.id)
+      .eq("stripe_id", session.subscription)
       .select()
       .single();
 

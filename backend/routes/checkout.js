@@ -13,9 +13,9 @@ router.post("/", async (req, res) => {
 
   try {
     // Vérifier si user existe
-    let { data: user } = await supabase.from("users").select("*").eq("email", email).single();
+    let { data: user } = await supabase.from("profiles").select("*").eq("email", email).single();
     if (!user) {
-      const { data: newUser } = await supabase.from("users").insert([{ email }]).select().single();
+      const { data: newUser } = await supabase.from("profiles").insert([{ email }]).select().single();
       user = newUser;
     }
 
@@ -30,12 +30,15 @@ router.post("/", async (req, res) => {
       mode: "subscription",
       customer_email: email,
       success_url: `${process.env.DOMAIN}/success`,
-      cancel_url: `${process.env.DOMAIN}/cancel`
+      cancel_url: `${process.env.DOMAIN}/cancel`,
+      expand: ['subscription'] 
     });
+
+    const subscriptionId = session.subscription.id;
 
     await supabase.from("subscriptions").insert([{
       user_id: user.id,
-      stripe_id: session.id,
+      stripe_subscription_id: subscriptionId,
       plan,
       status: "pending"
     }]);

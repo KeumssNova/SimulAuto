@@ -5,6 +5,8 @@ import Login from "./components/auth/login";
 import Register from "./components/auth/Register";
 import Dashboard from "./components/DashBoard";
 import Pricing from "./components/pricing";
+import ResetPassword from "./components/auth/ResetPassword";
+import UpdatePassword from "./components/auth/UpdatePassword";
 
 import Home from "./pages/Home";
 import MentionsLegales from "./pages/Mentions";
@@ -35,6 +37,8 @@ export default function App() {
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/success" element={<Success />} />
             <Route path="/cancel" element={<Cancel />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/update-password" element={<UpdatePassword />} />
           </Routes>
         </main>
         <Footer />
