@@ -2,6 +2,8 @@ import express from 'express';
 const router = express.Router();
 import Stripe from 'stripe';
 
+console.log('STRIPE_SECRET_KEY:', process.env.STRIPE_SECRET_KEY ? '✓' : '✗');
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2022-11-15' });
 
 // Price IDs Stripe à récupérer dans ton dashboard Stripe après création des plans
