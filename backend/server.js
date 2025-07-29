@@ -3,6 +3,7 @@ import cors from "cors";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 import Stripe from "stripe";
+import checkoutRoutes from './routes/checkout.js'
 import pricingRoutes from './routes/pricing.js';
 import webhookRoutes from './routes/webhook.js';
 import { createClient } from '@supabase/supabase-js';
