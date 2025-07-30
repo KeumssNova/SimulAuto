@@ -23,8 +23,8 @@ router.post("/", async (req, res) => {
     }
 
     const prices = {
-      basic: process.env.STRIPE_BASIC_PRICE_ID,
-      pro: process.env.STRIPE_PRO_PRICE_ID,
+      pro: process.env.STRIPE_BASIC_PRICE_ID,
+      business: process.env.STRIPE_PRO_PRICE_ID,
     };
 
     const DOMAIN = process.env.DOMAIN || "http://localhost:5173";
