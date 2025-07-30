@@ -13,12 +13,8 @@ router.post("/", async (req, res) => {
   if (!email || !plan) return res.status(400).json({ error: "Email et plan requis" });
 
   try {
-    // Vérifier si user existe
     let { data: user, error: userError } = await supabase.from("profiles").select("*").eq("email", email).single();
-    if (userError && userError.code !== "PGRST116") {
-      // autre erreur que "not found"
-      throw userError;
-    }
+    if (userError && userError.code !== "PGRST116") throw userError;
 
     if (!user) {
       const { data: newUser, error: insertError } = await supabase.from("profiles").insert([{ email }]).select().single();
@@ -40,21 +36,14 @@ router.post("/", async (req, res) => {
       customer_email: email,
       success_url: `${DOMAIN}/success`,
       cancel_url: `${DOMAIN}/cancel`,
-      expand: ["subscription"],
+      // Pas d'expansion "subscription" ici, ça ne sert à rien
     });
 
-    console.log("Session Stripe créée:", session);
-
-    const subscriptionId = session.subscription; // C’est une string (ID)
-    if (!subscriptionId) {
-      console.error("Pas d'abonnement dans la session Stripe");
-      return res.status(500).json({ error: "Impossible de récupérer l'abonnement Stripe" });
-    }
-
+    // Insérer une subscription "pending" pour cet utilisateur avec session.id pour relier (optionnel)
     await supabase.from("subscriptions").insert([
       {
         user_id: user.id,
-        stripe_subscription_id: subscriptionId,
+        stripe_checkout_session_id: session.id, // lien avec la session Stripe
         plan,
         status: "pending",
       },
@@ -66,5 +55,6 @@ router.post("/", async (req, res) => {
     res.status(500).json({ error: "Erreur serveur" });
   }
 });
+
 
 export default router;
