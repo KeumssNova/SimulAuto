@@ -10,6 +10,13 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+
+
+import { useUser } from "@supabase/auth-helpers-react"; // si tu utilises ça
+// sinon adapte avec ton contexte utilisateur
+
+
+
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884D8"];
 
 export default function SimulationForm() {
@@ -19,8 +26,9 @@ export default function SimulationForm() {
   const [inclureCFE, setInclureCFE] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
-
-  const handleCalculate = (e) => {
+  const user = useUser();
+  
+  const handleCalculate = async (e) => {
     e.preventDefault();
     setError(null);
     try {
@@ -31,6 +39,29 @@ export default function SimulationForm() {
         inclureCFE,
       });
       setResult(res);
+  
+      // Envoi au backend
+      if (user) {
+        await fetch("/api/simulate/save", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: user.id, // ou user?.user_metadata?.sub si tu viens de Supabase
+            simulation: {
+              ca: caNum,
+              activite: activity,
+              charges: res.charges,
+              impot: res.impot,
+              cotisationCMA: res.cotisationCMA,
+              formationPro: res.formationPro,
+              cfe: res.cfe,
+              revenuNet: res.revenuNet,
+              depasseTVA: res.depasseTVA,
+              depassePlafond: res.depassePlafond,
+            },
+          }),
+        });
+      }
     } catch (err) {
       setResult(null);
       setError(err.message);

@@ -1,6 +1,8 @@
 // src/components/auth/Register.jsx
 import { useState } from "react";
 import { supabase } from "../../utils/supabaseClient";
+import { Link } from "react-router-dom";
+
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -112,6 +114,11 @@ export default function Register() {
         >
           Mot de passe oublié ?
         </button>
+        <p className="text-sm text-center mt-2">
+          <Link to="/login" className="text-blue-600 hover:underline">
+            Déja un compte ? Connexion
+          </Link>
+        </p>
 
         {message && (
           <p

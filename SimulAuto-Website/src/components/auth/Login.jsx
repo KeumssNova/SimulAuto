@@ -87,6 +87,11 @@ export default function Login() {
             Mot de passe oublié ?
           </Link>
         </p>
+        <p className="text-sm text-center mt-2">
+          <Link to="/register" className="text-blue-600 hover:underline">
+            Pas de compte ? Inscription
+          </Link>
+        </p>
 
         {message && (
           <p

@@ -39,7 +39,7 @@ export default function Header() {
         </>
       ) : (
         <>
-          <a href="/dashboard" className="hover:text-blue-600">Dashboard</a>
+          <a href="/dashboard" className="hover:text-blue-600">Mon Compte</a>
           <button onClick={handleLogout} className="hover:text-red-600">Déconnexion</button>
         </>
       )}

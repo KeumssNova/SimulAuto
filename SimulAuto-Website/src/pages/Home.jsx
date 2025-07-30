@@ -3,6 +3,8 @@ import SEO from "../components/Seo";
 import SimulationForm from "../components/SimulationForm";
 import FAQ from "../pages/FAQ";
 
+
+
 export default function Home() {
   return (
     <div className="max-w-3xl mx-auto p-6">

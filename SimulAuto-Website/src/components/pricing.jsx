@@ -1,88 +1,82 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "../utils/supabaseClient";
 
-const priceIds = {
-  pro: "price_1Rpa6xD6J96wmmnQOEZUXZel",
-  business: "price_1RpaBsD6J96wmmnQ7hLjnccI",
-};
-
-export default function Pricing() {
-  const [userEmail, setUserEmail] = useState(null);
+export default function PricingSection() {
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const getUserEmail = async () => {
+    const checkUser = async () => {
       const {
         data: { user },
       } = await supabase.auth.getUser();
-      if (user?.email) {
-        setUserEmail(user.email);
-      }
+      setUser(user);
     };
-    getUserEmail();
+
+    checkUser();
   }, []);
 
   const handleCheckout = async (plan) => {
-    if (!userEmail) {
-      alert("Veuillez vous connecter d'abord.");
-      return;
-    }
-  
+    const res = await fetch("/api/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ plan }),
+    });
 
-    console.log({ email: userEmail, plan });
-  
-    try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/checkout`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: userEmail, plan }),
-      });
-  
-      const data = await res.json();
-  
-      if (res.ok && data.url) {
-        window.location.href = data.url;
-      } else {
-        // Affiche l’erreur retournée par le backend dans la console et dans une alert
-        console.error("Erreur paiement :", data);
-        alert(`Erreur lors du paiement : ${data.error || JSON.stringify(data)}`);
-      }
-    } catch (error) {
-      console.error("Erreur fetch :", error);
-      alert("Erreur réseau ou inattendue lors du paiement.");
-    }
+    const data = await res.json();
+    if (data.url) window.location.href = data.url;
   };
-  
 
   return (
     <section className="mt-16 max-w-4xl flex flex-wrap sm:flex-nowrap gap-6 justify-center">
+      {/* Freemium */}
       <div className="bg-white shadow rounded-xl p-6 max-w-sm w-full">
         <h3 className="text-lg font-semibold mb-1">Freemium</h3>
-        <p className="text-gray-600 mb-4">Gratuit – accès limité</p>
+        <p className="text-gray-600 mb-4">
+          Gratuit – 1 simulation/jour, options limitées
+        </p>
       </div>
 
+      {/* Pro */}
       <div className="bg-white shadow rounded-xl p-6 max-w-sm w-full flex flex-col justify-between">
         <div>
-          <h3 className="text-lg font-semibold mb-1">Pro – 19,99€/mois</h3>
-          <p className="text-gray-600 mb-4">Accès aux fonctions avancées</p>
+          <h3 className="text-lg font-semibold mb-1">Pro – 14,99€/mois</h3>
+          <p className="text-gray-600 mb-4">
+            Simulations illimitées, options fiscales, PDF et historique
+          </p>
         </div>
         <button
-          onClick={() => handleCheckout("pro")}
-          className="bg-black text-white px-4 py-2 rounded hover:opacity-70  transition cursor-pointer"
+          onClick={() => {
+            if (!user) {
+              window.location.href = "/login";
+            } else {
+              handleCheckout("pro");
+            }
+          }}
+          className="bg-black text-white px-4 py-2 rounded hover:opacity-70 transition cursor-pointer"
         >
-          S’abonner
+          {user ? "S’abonner" : "Se connecter pour s’abonner"}
         </button>
       </div>
 
+      {/* Business */}
       <div className="bg-white shadow rounded-xl p-6 max-w-sm w-full flex flex-col justify-between">
         <div>
-          <h3 className="text-lg font-semibold mb-1">Business – 59,99€/mois</h3>
-          <p className="text-gray-600 mb-4">Pensé pour un usage intensif</p>
+          <h3 className="text-lg font-semibold mb-1">Business – 49,99€/mois</h3>
+          <p className="text-gray-600 mb-4">
+            Gestion multi-profils, marque blanche, support prioritaire
+          </p>
         </div>
         <button
-          onClick={() => handleCheckout("business")}
-          className="bg-black text-white px-4 py-2 rounded hover:opacity-70   transition-all cursor-pointer"
+          onClick={() => {
+            if (!user) {
+              window.location.href = "/login";
+            } else {
+              handleCheckout("business");
+            }
+          }}
+          className="bg-black text-white px-4 py-2 rounded hover:opacity-70 transition cursor-pointer"
         >
-          S’abonner
+          {user ? "S’abonner" : "Se connecter pour s’abonner"}
         </button>
       </div>
     </section>
