@@ -1,7 +1,7 @@
 // src/components/auth/Login.jsx
 import { useState } from "react";
 import { supabase } from "../../utils/supabaseClient";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -83,9 +83,9 @@ export default function Login() {
           {loading ? "Connexion en cours..." : "Se connecter"}
         </button>
         <p className="text-sm text-center mt-2">
-          <a href="/reset-password" className="text-blue-600 hover:underline">
+          <Link to="/reset-password" className="text-blue-600 hover:underline">
             Mot de passe oublié ?
-          </a>
+          </Link>
         </p>
 
         {message && (

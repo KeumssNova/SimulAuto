@@ -8,6 +8,17 @@ export default function UpdatePassword() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (!data.session) {
+        navigate("/login"); // Ou tu peux afficher un message custom si tu veux
+      }
+    };
+    checkAuth();
+  }, []);
+
   const handleUpdate = async (e) => {
     e.preventDefault();
     setMessage("");

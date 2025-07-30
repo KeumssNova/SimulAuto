@@ -31,24 +31,16 @@ export default function Register() {
     }
 
     const { data, error } = await supabase.auth.signUp({ email, password });
-
+    console.log("data", data);
+    console.log("error", error);
     if (error) {
       // Supabase gère déjà si l'email est déjà pris
       setMessage("Erreur : " + error.message.replace("AuthApiError: ", ""));
     } else {
-      const user = data.user;
-
-      if (user) {
-        // ⚠️ l'email doit être confirmé avant d'être actif
-        await supabase
-          .from("profiles")
-          .insert([{ id: user.id, email: user.email }]);
-
-        setUser(user);
-        setMessage("Inscription réussie ! Vérifiez votre email pour confirmer votre compte.");
-      } else {
-        setMessage("Un lien de confirmation a été envoyé à votre adresse email.");
-      }
+      setUser(data.user);
+      setMessage(
+        "Inscription réussie ! Vérifiez votre email pour confirmer votre compte."
+      );
     }
 
     setLoading(false);
@@ -56,7 +48,9 @@ export default function Register() {
 
   const handleResetPassword = async () => {
     if (!isValidEmail(email)) {
-      setMessage("Veuillez entrer une adresse e-mail valide pour réinitialiser le mot de passe.");
+      setMessage(
+        "Veuillez entrer une adresse e-mail valide pour réinitialiser le mot de passe."
+      );
       return;
     }
 
