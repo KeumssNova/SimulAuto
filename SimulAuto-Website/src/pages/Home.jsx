@@ -1,3 +1,4 @@
+import Pricing from "../components/pricing";
 import SEO from "../components/Seo";
 import SimulationForm from "../components/SimulationForm";
 import FAQ from "../pages/FAQ";
@@ -22,7 +23,7 @@ export default function Home() {
           Basé sur les taux officiels 2025, il est simple, rapide et gratuit.
         </p>
       </section>
-
+      <Pricing />
       <section className="mt-12">
         <h2 className="text-2xl font-semibold mb-4">Des questions ?</h2>
         <FAQ/>

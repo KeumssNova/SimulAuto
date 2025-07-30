@@ -24,13 +24,15 @@ router.post("/", async (req, res) => {
       pro: process.env.STRIPE_PRO_PRICE_ID
     };
 
+    const DOMAIN = process.env.DOMAIN || "http://localhost:5173";
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [{ price: prices[plan], quantity: 1 }],
       mode: "subscription",
       customer_email: email,
-      success_url: `${process.env.DOMAIN}/success`,
-      cancel_url: `${process.env.DOMAIN}/cancel`,
+      success_url: `${DOMAIN}/success`,
+      cancel_url: `${DOMAIN}/cancel`,
       expand: ['subscription'] 
     });
 

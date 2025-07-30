@@ -54,7 +54,13 @@ export default function ResetPassword() {
         </button>
 
         {message && (
-          <p className="mt-4 text-sm text-center text-red-600">{message}</p>
+          <p
+            className={`mt-4 text-sm text-center ${
+              isError ? "text-red-600" : "text-green-600"
+            }`}
+          >
+            {message}
+          </p>
         )}
       </form>
     </div>

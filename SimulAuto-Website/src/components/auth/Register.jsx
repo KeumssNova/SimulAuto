@@ -8,8 +8,12 @@ export default function Register() {
   const [message, setMessage] = useState("");
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
+  const cleanEmail = email.trim();
+  const cleanPassword = password.trim();
 
-  const isValidEmail = (email) => /\S+@\S+\.\S+/.test(email);
+  function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
   const isValidPassword = (password) => password.length >= 6;
 
   const handleRegister = async (e) => {
@@ -30,7 +34,14 @@ export default function Register() {
       return;
     }
 
-    const { data, error } = await supabase.auth.signUp({ email, password });
+    console.log("Email:", cleanEmail);
+    console.log("Password length:", cleanPassword.length);
+
+    const { data, error } = await supabase.auth.signUp({
+      email: cleanEmail,
+      password: cleanPassword,
+    });
+
     console.log("data", data);
     console.log("error", error);
     if (error) {
@@ -103,7 +114,13 @@ export default function Register() {
         </button>
 
         {message && (
-          <p className="mt-4 text-sm text-center text-red-600">{message}</p>
+          <p
+            className={`mt-4 text-sm text-center ${
+              isError ? "text-red-600" : "text-green-600"
+            }`}
+          >
+            {message}
+          </p>
         )}
       </form>
     </div>
