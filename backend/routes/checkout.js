@@ -8,6 +8,7 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY
 
 router.post("/", async (req, res) => {
   const { email, plan } = req.body;
+  console.log("Requête checkout reçue :", { email, plan });
 
   if (!email || !plan) return res.status(400).json({ error: "Email et plan requis" });
 
@@ -36,6 +37,11 @@ router.post("/", async (req, res) => {
       expand: ['subscription'] 
     });
 
+    console.log("Session Stripe créée:", session);
+    if (!session.subscription) {
+      console.error("Pas d'abonnement dans la session Stripe");
+      return res.status(500).json({ error: "Impossible de récupérer l'abonnement Stripe" });
+    }
     const subscriptionId = session.subscription.id;
 
     await supabase.from("subscriptions").insert([{

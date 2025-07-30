@@ -26,21 +26,32 @@ export default function Pricing() {
       alert("Veuillez vous connecter d'abord.");
       return;
     }
+  
 
-    const priceId = priceIds[plan];
-    const res = await fetch("${import.meta.env.VITE_API_URL}/api/checkout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: userEmail, priceId }),
-    });
-
-    const data = await res.json();
-    if (data.url) {
-      window.location.href = data.url;
-    } else {
-      alert("Erreur lors du paiement");
+    console.log({ email: userEmail, plan });
+  
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/checkout`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: userEmail, plan }),
+      });
+  
+      const data = await res.json();
+  
+      if (res.ok && data.url) {
+        window.location.href = data.url;
+      } else {
+        // Affiche l’erreur retournée par le backend dans la console et dans une alert
+        console.error("Erreur paiement :", data);
+        alert(`Erreur lors du paiement : ${data.error || JSON.stringify(data)}`);
+      }
+    } catch (error) {
+      console.error("Erreur fetch :", error);
+      alert("Erreur réseau ou inattendue lors du paiement.");
     }
   };
+  
 
   return (
     <section className="mt-16 max-w-4xl flex flex-wrap sm:flex-nowrap gap-6 justify-center">
