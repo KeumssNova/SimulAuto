@@ -34,16 +34,17 @@ router.post("/", async (req, res) => {
       customer_email: email,
       success_url: `${DOMAIN}/success`,
       cancel_url: `${DOMAIN}/cancel`,
-      expand: ['subscription'] 
+      expand: ['subscription']  // ça peut rester
     });
-
+    
     console.log("Session Stripe créée:", session);
-    if (!session.subscription) {
+    
+    const subscriptionId = session.subscription; // ID sous forme de string
+    if (!subscriptionId) {
       console.error("Pas d'abonnement dans la session Stripe");
       return res.status(500).json({ error: "Impossible de récupérer l'abonnement Stripe" });
     }
-    const subscriptionId = session.subscription.id;
-
+    
     await supabase.from("subscriptions").insert([{
       user_id: user.id,
       stripe_subscription_id: subscriptionId,
