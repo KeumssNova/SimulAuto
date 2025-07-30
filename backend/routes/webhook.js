@@ -19,23 +19,27 @@ router.post('/',async (req, res) => {
 
   if (event.type === "checkout.session.completed") {
     const session = event.data.object;
-
-    const { data: sub } = await supabase
+    console.log("Webhook checkout.session.completed reçu :", session);
+  
+    const { data: sub, error } = await supabase
       .from("subscriptions")
       .update({ status: "active" })
       .eq("stripe_id", session.subscription)
       .select()
       .single();
-
-    await supabase.from("payments").insert([{
-      user_id: sub.user_id,
-      stripe_payment_id: session.payment_intent,
-      amount: session.amount_total,
-      currency: session.currency,
-      status: "succeeded"
-    }]);
+  
+    if (error) {
+      console.error("Erreur update subscription :", error);
+    } else {
+      await supabase.from("payments").insert([{
+        user_id: sub.user_id,
+        stripe_payment_id: session.payment_intent,
+        amount: session.amount_total,
+        currency: session.currency,
+        status: "succeeded"
+      }]);
+    }
   }
-  res.json({ received: true });
-});
+  
 
 export default router;

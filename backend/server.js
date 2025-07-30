@@ -80,13 +80,12 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 app.use(
   '/api/webhook',
-  bodyParser.raw({ type: 'application/json' })
+  bodyParser.raw({ type: 'application/json' }),
+  webhookRoutes
 );
 
-// Routes à ajouter plus bas
 app.use("/api/checkout", checkoutRoutes);
 app.use('/api/pricing', pricingRoutes);
-app.use('/api/webhook', webhookRoutes);
 
 app.listen(process.env.PORT || 3001, () => {
   console.log('Serveur démarré');
