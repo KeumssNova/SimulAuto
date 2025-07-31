@@ -1,7 +1,7 @@
 // routes/simulate.js
-const express = require("express");
+import express from 'express';
 const router = express.Router();
-const supabase = require("../supabaseClient");
+import supabase from '../utils/supabaseClient.js';
 
 router.post("/save", async (req, res) => {
   const { userId, simulation } = req.body;
@@ -18,4 +18,4 @@ router.post("/save", async (req, res) => {
   return res.status(200).json({ success: true });
 });
 
-module.exports = router;
+export default router;
