@@ -73,9 +73,6 @@ app.post("/api/contact", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Serveur en écoute sur le port ${PORT}`);
-});
 
 // STRIPE
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -94,9 +91,6 @@ app.use("/api/stripe-portal", portalRoutes);
 app.use("/api/simulate", simulateRoutes);
 
 
-app.listen(process.env.PORT || 3001, () => {
-  console.log('Serveur démarré');
-});
 
 // BDD 
 
@@ -105,3 +99,4 @@ const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_KEY
 );
+
