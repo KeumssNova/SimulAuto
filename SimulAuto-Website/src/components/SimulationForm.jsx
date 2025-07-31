@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect,useState } from "react";
 import { calculAutoEntrepreneur } from "../utils/simulation";
+import { supabase } from "../utils/supabaseClient";
 import ResultCard from "./ResultCard";
 import {
   PieChart,
@@ -10,12 +11,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-
-
 import { useUser } from "@supabase/auth-helpers-react"; // si tu utilises ça
 // sinon adapte avec ton contexte utilisateur
-
-
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884D8"];
 
@@ -27,7 +24,26 @@ export default function SimulationForm() {
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
   const user = useUser();
-  
+  const [user1, setUser] = useState(null);
+  const [plan, setPlan] = useState("free");
+  const [isLimited, setIsLimited] = useState(false);
+
+  useEffect(() => {
+    const getUserAndPlan = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user1) {
+        setUser(user1);
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('plan')
+          .eq('id', user1.id)
+          .single();
+        if (!error && data?.plan) setPlan(data.plan);
+      }
+    };
+    getUserAndPlan();
+  }, []);
+
   const handleCalculate = async (e) => {
     e.preventDefault();
     setError(null);
@@ -39,7 +55,7 @@ export default function SimulationForm() {
         inclureCFE,
       });
       setResult(res);
-  
+
       // Envoi au backend
       if (user) {
         await fetch("/api/simulate/save", {
@@ -83,7 +99,9 @@ export default function SimulationForm() {
     <div className="bg-white shadow rounded-xl p-6 max-w-lg mx-auto">
       <form onSubmit={handleCalculate} className="space-y-4">
         <div>
-          <label className="block mb-1 font-medium">Chiffre d’affaires (€)</label>
+          <label className="block mb-1 font-medium">
+            Chiffre d’affaires (€)
+          </label>
           <input
             type="number"
             value={ca}
@@ -145,10 +163,16 @@ export default function SimulationForm() {
           {(result.depasseTVA || result.depassePlafond) && (
             <div className="mt-4 p-3 rounded bg-yellow-100 text-yellow-800 font-semibold">
               {result.depasseTVA && (
-                <p>⚠️ Attention : vous dépassez le seuil de TVA à {result.seuilTVA} €.</p>
+                <p>
+                  ⚠️ Attention : vous dépassez le seuil de TVA à{" "}
+                  {result.seuilTVA} €.
+                </p>
               )}
               {result.depassePlafond && (
-                <p>⚠️ Attention : vous dépassez le plafond autorisé à {result.plafondCA} €.</p>
+                <p>
+                  ⚠️ Attention : vous dépassez le plafond autorisé à{" "}
+                  {result.plafondCA} €.
+                </p>
               )}
             </div>
           )}
@@ -170,7 +194,10 @@ export default function SimulationForm() {
                   }
                 >
                   {dataPie.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
                   ))}
                 </Pie>
                 <Tooltip formatter={(value) => `${value.toFixed(2)} €`} />

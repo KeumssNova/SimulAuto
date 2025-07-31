@@ -3,6 +3,7 @@ import { supabase } from "../utils/supabaseClient";
 
 export default function PricingSection() {
   const [user, setUser] = useState(null);
+  const BASE_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const checkUser = async () => {
@@ -12,14 +13,18 @@ export default function PricingSection() {
       setUser(user);
     };
 
+    
     checkUser();
   }, []);
+  
+  console.log(user)
+
 
   const handleCheckout = async (plan) => {
-    const res = await fetch("/api/checkout", {
+    const res = await fetch(`${BASE_URL}/api/checkout`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ plan }),
+      body: JSON.stringify({ plan, email: user?.email || "" }),
     });
 
     const data = await res.json();
