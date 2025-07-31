@@ -9,7 +9,7 @@ import webhookRoutes from './routes/webhook.js';
 import { createClient } from '@supabase/supabase-js';
 import bodyParser from "body-parser";
 import portalRoutes from "./routes/portal.js"
-
+import simulateRoutes from "./routes/simulate.js";
 
 
 dotenv.config({path: "/etc/secrets/.env"});
@@ -90,7 +90,7 @@ app.use("/api/checkout", checkoutRoutes);
 app.use('/api/pricing', pricingRoutes);
 app.use("/api/stripe-portal", portalRoutes);
 
-const simulateRoutes = require("./routes/simulate");
+
 app.use("/api/simulate", simulateRoutes);
 
 
