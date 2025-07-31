@@ -1,7 +1,7 @@
-// routes/simulate.js
 import express from 'express';
+import { supabaseAdmin } from '../supabaseAdmin.js';
+
 const router = express.Router();
-import supabase from '../utils/supabaseClient.js';
 
 router.post("/save", async (req, res) => {
   const { userId, simulation } = req.body;
@@ -10,7 +10,7 @@ router.post("/save", async (req, res) => {
     return res.status(400).json({ error: "Champs manquants." });
   }
 
-  const { error } = await supabase
+  const { error } = await supabaseAdmin
     .from("simulations")
     .insert([{ user_id: userId, ...simulation }]);
 
