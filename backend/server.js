@@ -99,4 +99,6 @@ const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_KEY
 );
-
+app.listen(PORT, () => {
+  console.log(`Serveur en écoute sur le port ${PORT}`);
+});
