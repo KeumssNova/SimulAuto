@@ -37,14 +37,15 @@ export default function PricingSection() {
       <div className="bg-white shadow rounded-xl p-6 max-w-sm w-full">
         <h3 className="text-lg font-semibold mb-1">Freemium</h3>
         <p className="text-gray-600 mb-4">
-          Gratuit – 1 simulation/jour, options limitées
+          Gratuit – simulation illimitées, sans options
         </p>
       </div>
 
       {/* Pro */}
-      <div className="bg-white shadow rounded-xl p-6 max-w-sm w-full flex flex-col justify-between">
-        <div>
-          <h3 className="text-lg font-semibold mb-1">Pro – 14,99€/mois</h3>
+      <div className="bg-white shadow rounded-xl p-6 max-w-sm w-full flex flex-col justify-center items-center"> {/* remettre le justify between */}
+        <p>Bientot disponibles..</p>
+        {/* <div> */}
+          {/* <h3 className="text-lg font-semibold mb-1">Pro – 14,99€/mois</h3>
           <p className="text-gray-600 mb-4">
             Simulations illimitées, options fiscales, PDF et historique
           </p>
@@ -60,12 +61,13 @@ export default function PricingSection() {
           className="bg-black text-white px-4 py-2 rounded hover:opacity-70 transition cursor-pointer"
         >
           {user ? "S’abonner" : "Se connecter pour s’abonner"}
-        </button>
+        </button> */}
       </div>
 
       {/* Business */}
-      <div className="bg-white shadow rounded-xl p-6 max-w-sm w-full flex flex-col justify-between">
-        <div>
+      <div className="bg-white shadow rounded-xl p-6 max-w-sm w-full flex flex-col justify-center items-center"> {/* remettre le justify between */}
+        <p>Bientot disponibles..</p>
+        {/* <div>
           <h3 className="text-lg font-semibold mb-1">Business – 49,99€/mois</h3>
           <p className="text-gray-600 mb-4">
             Gestion multi-profils, marque blanche, support prioritaire
@@ -82,7 +84,7 @@ export default function PricingSection() {
           className="bg-black text-white px-4 py-2 rounded hover:opacity-70 transition cursor-pointer"
         >
           {user ? "S’abonner" : "Se connecter pour s’abonner"}
-        </button>
+        </button> */}
       </div>
     </section>
   );

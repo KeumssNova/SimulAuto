@@ -90,7 +90,7 @@ export default function SimulationForm() {
         { name: "Impôts (versement libératoire)", value: result.impot },
         { name: "Cotisation CMA", value: result.cotisationCMA },
         { name: "Formation pro", value: result.formationPro },
-        { name: "CFE", value: result.cfe },
+        // { name: "CFE", value: result.cfe },
         { name: "Revenu net", value: result.revenuNet },
       ]
     : [];
@@ -136,7 +136,7 @@ export default function SimulationForm() {
           </label>
         </div>
 
-        <div className="flex items-center space-x-3">
+        {/* <div className="flex items-center space-x-3">
           <input
             type="checkbox"
             id="inclureCFE"
@@ -146,7 +146,7 @@ export default function SimulationForm() {
           <label htmlFor="inclureCFE" className="select-none">
             Inclure Cotisation Foncière des Entreprises (CFE)
           </label>
-        </div>
+        </div> */}
 
         <button
           type="submit"

@@ -10,7 +10,6 @@ export default function ResultCard({
   impot,
   cotisationCMA,
   formationPro,
-  cfe,
   revenuNet,
 }) {
   return (
@@ -21,7 +20,7 @@ export default function ResultCard({
       <p><strong>Impôts (versement libératoire) :</strong> {impot.toFixed(2)} €</p>
       <p><strong>Cotisation CMA :</strong> {cotisationCMA.toFixed(2)} €</p>
       <p><strong>Formation professionnelle :</strong> {formationPro.toFixed(2)} €</p>
-      <p><strong>CFE :</strong> {(cfe ?? 0).toFixed(2)} €</p>
+      {/* <p><strong>CFE :</strong> {(cfe ?? 0).toFixed(2)} €</p> */}
       <p className="font-semibold text-lg mt-2">Revenu net : {revenuNet.toFixed(2)} €</p>
     </div>
   );
